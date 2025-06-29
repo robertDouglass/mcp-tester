@@ -1,0 +1,235 @@
+{
+  "timestamp": "2025-06-29T13:43:26.244Z",
+  "summary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "byTransport": {
+      "stdio": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "totalTests": 5,
+    "passedTests": 5,
+    "failedTests": 0
+  },
+  "results": [
+    {
+      "name": "MCP Server Test",
+      "transport": "stdio",
+      "config": {
+        "type": "stdio",
+        "command": "/Users/robert/.toolbase/toolbase-runner",
+        "args": [
+          "-p=proxy",
+          "-f=/Users/robert/.toolbase/config.json",
+          "-v=claudeCode",
+          "-l=/Users/robert/Library/Logs/Toolbase/claudeCode-toolbase-proxy.log",
+          "-t=49"
+        ]
+      },
+      "startTime": "2025-06-29T13:43:17.784Z",
+      "tests": [
+        {
+          "name": "List Tools",
+          "startTime": "2025-06-29T13:43:25.925Z",
+          "result": {
+            "count": 35,
+            "tools": [
+              {
+                "name": "linkup_search-web",
+                "description": "Performs a search for user input query using Linkup sdk then returns a string of the top search resu..."
+              },
+              {
+                "name": "context7_resolve-library-id",
+                "description": "Resolves a package/product name to a Context7-compatible library ID and returns a list of matching l..."
+              },
+              {
+                "name": "context7_get-library-docs",
+                "description": "Fetches up-to-date documentation for a library. You must call 'resolve-library-id' first to obtain t..."
+              },
+              {
+                "name": "tavilysearch_tavily-search",
+                "description": "A powerful web search tool that provides comprehensive, real-time results using Tavily's AI search e..."
+              },
+              {
+                "name": "tavilysearch_tavily-extract",
+                "description": "A powerful web content extraction tool that retrieves and processes raw content from specified URLs,..."
+              },
+              {
+                "name": "brave_search_brave_web_search",
+                "description": "Performs a web search using the Brave Search API, ideal for general queries, news, articles, and onl..."
+              },
+              {
+                "name": "brave_search_brave_local_search",
+                "description": "Searches for local businesses and places using Brave's Local Search API. Best for queries related to..."
+              },
+              {
+                "name": "perplexity_ask_perplexity",
+                "description": "\nPerplexity equips agents with a specialized tool for efficiently\ngathering source-backed informatio..."
+              },
+              {
+                "name": "toolbase_github_create_or_update_file",
+                "description": "Create or update a single file in a GitHub repository"
+              },
+              {
+                "name": "toolbase_github_search_repositories",
+                "description": "Search for GitHub repositories"
+              },
+              {
+                "name": "toolbase_github_create_repository",
+                "description": "Create a new GitHub repository in your account"
+              },
+              {
+                "name": "toolbase_github_get_file_contents",
+                "description": "Get the contents of a file or directory from a GitHub repository"
+              },
+              {
+                "name": "toolbase_github_push_files",
+                "description": "Push multiple files to a GitHub repository in a single commit"
+              },
+              {
+                "name": "toolbase_github_create_issue",
+                "description": "Create a new issue in a GitHub repository"
+              },
+              {
+                "name": "toolbase_github_create_pull_request",
+                "description": "Create a new pull request in a GitHub repository"
+              },
+              {
+                "name": "toolbase_github_fork_repository",
+                "description": "Fork a GitHub repository to your account or specified organization"
+              },
+              {
+                "name": "toolbase_github_create_branch",
+                "description": "Create a new branch in a GitHub repository"
+              },
+              {
+                "name": "toolbase_github_list_commits",
+                "description": "Get list of commits of a branch in a GitHub repository"
+              },
+              {
+                "name": "toolbase_github_list_issues",
+                "description": "List issues in a GitHub repository with filtering options"
+              },
+              {
+                "name": "toolbase_github_update_issue",
+                "description": "Update an existing issue in a GitHub repository"
+              },
+              {
+                "name": "toolbase_github_add_issue_comment",
+                "description": "Add a comment to an existing issue"
+              },
+              {
+                "name": "toolbase_github_search_code",
+                "description": "Search for code across GitHub repositories"
+              },
+              {
+                "name": "toolbase_github_search_issues",
+                "description": "Search for issues and pull requests across GitHub repositories"
+              },
+              {
+                "name": "toolbase_github_search_users",
+                "description": "Search for users on GitHub"
+              },
+              {
+                "name": "toolbase_github_get_issue",
+                "description": "Get details of a specific issue in a GitHub repository."
+              },
+              {
+                "name": "toolbase_github_get_my_user",
+                "description": "Get details of the currently authenticated user"
+              },
+              {
+                "name": "toolbase_github_get_my_user_repositories",
+                "description": "Get repositories for the currently authenticated user"
+              },
+              {
+                "name": "toolbase_github_get_my_user_organizations",
+                "description": "Get organizations for the currently authenticated user"
+              },
+              {
+                "name": "puppeteer_puppeteer_navigate",
+                "description": "Navigate to a URL"
+              },
+              {
+                "name": "puppeteer_puppeteer_screenshot",
+                "description": "Take a screenshot of the current page or a specific element"
+              },
+              {
+                "name": "puppeteer_puppeteer_click",
+                "description": "Click an element on the page"
+              },
+              {
+                "name": "puppeteer_puppeteer_fill",
+                "description": "Fill out an input field"
+              },
+              {
+                "name": "puppeteer_puppeteer_select",
+                "description": "Select an element on the page with Select tag"
+              },
+              {
+                "name": "puppeteer_puppeteer_hover",
+                "description": "Hover an element on the page"
+              },
+              {
+                "name": "puppeteer_puppeteer_evaluate",
+                "description": "Execute JavaScript in the browser console"
+              }
+            ]
+          },
+          "status": "passed",
+          "duration": 49
+        },
+        {
+          "name": "List Resources",
+          "startTime": "2025-06-29T13:43:25.975Z",
+          "result": {
+            "count": 0,
+            "resources": [],
+            "note": "Server does not support resources"
+          },
+          "status": "passed",
+          "duration": 0
+        },
+        {
+          "name": "List Prompts",
+          "startTime": "2025-06-29T13:43:25.975Z",
+          "result": {
+            "count": 0,
+            "prompts": [],
+            "note": "Server does not support prompts"
+          },
+          "status": "passed",
+          "duration": 0
+        },
+        {
+          "name": "Rapid Sequential Requests",
+          "startTime": "2025-06-29T13:43:25.976Z",
+          "result": {
+            "requests": 10,
+            "duration": 225,
+            "avgTime": "23ms"
+          },
+          "status": "passed",
+          "duration": 225
+        },
+        {
+          "name": "Concurrent Requests",
+          "startTime": "2025-06-29T13:43:26.201Z",
+          "result": {
+            "requests": 5,
+            "duration": 42,
+            "avgTime": "8ms"
+          },
+          "status": "passed",
+          "duration": 42
+        }
+      ],
+      "status": "passed",
+      "duration": 8459
+    }
+  ]
+}
