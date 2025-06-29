@@ -23,17 +23,17 @@ This directory contains a comprehensive MCP (Model Context Protocol) testing fra
 
 1. **For stdio transport (most common)**:
 ```bash
-node /Users/robert/Code/mcp-tester/mcp-test-framework-advanced.js stdio <your-server-command> [args...] --verbose
+mcp-tester stdio <your-server-command> [args...] --verbose
 ```
 
 2. **For SSE transport**:
 ```bash
-node /Users/robert/Code/mcp-tester/mcp-test-framework-advanced.js sse <server-url> --header "Authorization: Bearer token" --verbose
+mcp-tester sse <server-url> --header "Authorization: Bearer token" --verbose
 ```
 
 3. **For StreamableHTTP transport**:
 ```bash
-node /Users/robert/Code/mcp-tester/mcp-test-framework-advanced.js streamableHttp <server-url> --auth "token" --verbose
+mcp-tester streamableHttp <server-url> --auth "token" --verbose
 ```
 
 ## Detailed Testing Instructions
@@ -46,7 +46,7 @@ After building the server, test it immediately:
 
 ```javascript
 // In the user's project directory, create test-mcp.js
-const { MCPTestFrameworkAdvanced } = require('/Users/robert/Code/mcp-tester/mcp-test-framework-advanced');
+const { MCPTestFrameworkAdvanced } = require('@robertdouglass/mcp-tester');
 
 async function testMyServer() {
   const framework = new MCPTestFrameworkAdvanced({
@@ -96,7 +96,7 @@ If the server supports multiple transports:
 
 ```javascript
 // Create test-all-transports.js
-const { MCPTestFrameworkAdvanced } = require('/Users/robert/Code/mcp-tester/mcp-test-framework-advanced');
+const { MCPTestFrameworkAdvanced } = require('@robertdouglass/mcp-tester');
 
 async function testAllTransports() {
   const framework = new MCPTestFrameworkAdvanced({ verbose: true });
@@ -142,7 +142,7 @@ testAllTransports().catch(console.error);
 When testing an MCP server, enumerate all tools and test them:
 
 ```javascript
-const { MCPTestFrameworkAdvanced } = require('/Users/robert/Code/mcp-tester/mcp-test-framework-advanced');
+const { MCPTestFrameworkAdvanced } = require('@robertdouglass/mcp-tester');
 const { Client } = require('@modelcontextprotocol/sdk/client/index.js');
 const { StdioClientTransport } = require('@modelcontextprotocol/sdk/client/stdio.js');
 
@@ -243,7 +243,7 @@ node ./server.js > output.txt 2> error.txt
 # error.txt should contain your debug messages
 
 # Then test with the framework
-node /Users/robert/Code/mcp-tester/mcp-test-framework-advanced.js stdio node ./server.js --verbose
+mcp-tester stdio node ./server.js --verbose
 ```
 
 ### 3. Check Test Results
@@ -357,7 +357,7 @@ log('Server started'); // Only logs when DEBUG=true
 DEBUG=true node ./my-mcp-server.js
 
 # Test with the framework (logs will appear in terminal)
-node /Users/robert/Code/mcp-tester/mcp-test-framework-advanced.js stdio "env DEBUG=true node ./my-mcp-server.js" --verbose
+mcp-tester stdio "env DEBUG=true node ./my-mcp-server.js" --verbose
 ```
 
 **Quick Checklist for stdio servers:**
@@ -400,7 +400,7 @@ Here's a complete example to copy and adapt:
 #!/usr/bin/env node
 // File: test-my-mcp-server.js
 
-const { MCPTestFrameworkAdvanced } = require('/Users/robert/Code/mcp-tester/mcp-test-framework-advanced');
+const { MCPTestFrameworkAdvanced } = require('@robertdouglass/mcp-tester');
 
 async function runTests() {
   const framework = new MCPTestFrameworkAdvanced({

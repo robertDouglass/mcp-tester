@@ -3,7 +3,7 @@
 /**
  * MCP Test CLI - Comprehensive testing framework for Model Context Protocol servers
  * @author Robert Douglass
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 const { MCPTestFrameworkAdvanced } = require('../lib/mcp-test-framework-advanced.js');
@@ -12,29 +12,29 @@ const path = require('path');
 
 function showHelp() {
   console.log(`
-🧪 MCP Tester v1.1.0 - Model Context Protocol Testing Framework
+🧪 MCP Tester v1.2.0 - Model Context Protocol Testing Framework
 
 USAGE:
   npx @robertdouglass/mcp-tester <transport> <config...> [options]
   npx mcp-tester <transport> <config...> [options]
-  mcp-test <transport> <config...> [options]
+  mcp-tester <transport> <config...> [options]
 
 TRANSPORT TYPES:
   auto <url>
     🎯 RECOMMENDED: Auto-detect transport type for HTTP servers
-    Example: mcp-test auto http://localhost:3000/mcp
+    Example: mcp-tester auto http://localhost:3000/mcp
 
   stdio <command> [args...]
     Test MCP server using stdin/stdout transport
-    Example: mcp-test stdio node ./my-server.js
+    Example: mcp-tester stdio node ./my-server.js
 
   sse <url> [--header "Key: Value"]
     Test MCP server using Server-Sent Events transport  
-    Example: mcp-test sse http://localhost:3000/mcp
+    Example: mcp-tester sse http://localhost:3000/mcp
 
   streamableHttp <url> [--header "Key: Value"] [--auth "token"]
     Test MCP server using StreamableHTTP transport
-    Example: mcp-test streamableHttp http://localhost:3000/mcp
+    Example: mcp-tester streamableHttp http://localhost:3000/mcp
 
 OPTIONS:
   --verbose         Show detailed test output
@@ -45,16 +45,16 @@ OPTIONS:
 
 EXAMPLES:
   # Auto-detect transport (RECOMMENDED for HTTP servers)
-  mcp-test auto http://localhost:3000/mcp --verbose
+  mcp-tester auto http://localhost:3000/mcp --verbose
 
   # Test stdio server
-  mcp-test stdio node ./examples/example-mcp-server.js --verbose
+  mcp-tester stdio node ./examples/example-mcp-server.js --verbose
 
   # Test HTTP server with auth
-  mcp-test streamableHttp http://localhost:3000/mcp --auth "Bearer xyz" --verbose
+  mcp-tester streamableHttp http://localhost:3000/mcp --auth "Bearer xyz" --verbose
 
   # Test SSE server with headers
-  mcp-test sse http://localhost:3000/mcp --header "Authorization: Bearer xyz"
+  mcp-tester sse http://localhost:3000/mcp --header "Authorization: Bearer xyz"
 
 WHAT IT TESTS:
   ✓ Connection establishment
@@ -105,8 +105,8 @@ The @robertdouglass/mcp-tester package provides comprehensive testing for MCP se
 
 BASIC USAGE IN CLAUDE:
 1. Install: npm install -g @robertdouglass/mcp-tester
-2. Test stdio server: mcp-test stdio node ./your-server.js --verbose
-3. Test HTTP server: mcp-test streamableHttp http://localhost:3000/mcp --verbose
+2. Test stdio server: mcp-tester stdio node ./your-server.js --verbose
+3. Test HTTP server: mcp-tester streamableHttp http://localhost:3000/mcp --verbose
 
 IMPORTANT NOTES:
 - Always use console.error() for logging in stdio MCP servers, NOT console.log()

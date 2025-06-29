@@ -1,6 +1,6 @@
 # MCP Tester
 
-[![npm version](https://badge.fury.io/js/mcp-tester.svg)](https://badge.fury.io/js/mcp-tester)
+[![npm version](https://badge.fury.io/js/@robertdouglass%2Fmcp-tester.svg)](https://badge.fury.io/js/@robertdouglass%2Fmcp-tester)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A comprehensive testing framework for [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers supporting all transport types: stdio, SSE, and StreamableHTTP.
@@ -18,13 +18,13 @@ A comprehensive testing framework for [Model Context Protocol (MCP)](https://mod
 ## Installation
 
 ```bash
-npm install -g mcp-tester
+npm install -g @robertdouglass/mcp-tester
 ```
 
 Or for local installation:
 
 ```bash
-npm install mcp-tester
+npm install @robertdouglass/mcp-tester
 ```
 
 ## Quick Start
@@ -32,25 +32,25 @@ npm install mcp-tester
 ### Testing a stdio MCP server:
 
 ```bash
-mcp-test stdio node ./my-mcp-server.js --verbose
+mcp-tester stdio node ./my-mcp-server.js --verbose
 ```
 
 ### Testing an SSE MCP server:
 
 ```bash
-mcp-test sse http://localhost:3000/mcp/sse --verbose
+mcp-tester sse http://localhost:3000/mcp/sse --verbose
 ```
 
 ### Testing a StreamableHTTP MCP server:
 
 ```bash
-mcp-test streamableHttp http://localhost:3000/mcp --verbose
+mcp-tester streamableHttp http://localhost:3000/mcp --verbose
 ```
 
 ## Programmatic Usage
 
 ```javascript
-const { MCPTestFrameworkAdvanced } = require('mcp-tester');
+const { MCPTestFrameworkAdvanced } = require('@robertdouglass/mcp-tester');
 
 async function testMyServer() {
   const framework = new MCPTestFrameworkAdvanced({
@@ -109,14 +109,14 @@ console.error('Server started');
 For HTTP-based MCP servers using Server-Sent Events.
 
 ```bash
-mcp-test sse http://localhost:3000/sse --header "Authorization: Bearer token"
+mcp-tester sse http://localhost:3000/sse --header "Authorization: Bearer token"
 ```
 
 ### 3. StreamableHTTP Transport
 For HTTP-based MCP servers using streaming HTTP requests.
 
 ```bash
-mcp-test streamableHttp http://localhost:3000/mcp --auth "bearer-token"
+mcp-tester streamableHttp http://localhost:3000/mcp --auth "bearer-token"
 ```
 
 ## Test Types
@@ -146,7 +146,7 @@ mcp-test streamableHttp http://localhost:3000/mcp --auth "bearer-token"
 Test the same server across all transport types:
 
 ```javascript
-const { MCPTestFrameworkAdvanced } = require('mcp-tester');
+const { MCPTestFrameworkAdvanced } = require('@robertdouglass/mcp-tester');
 
 const configs = [
   { type: 'stdio', command: 'node', args: ['./server.js'] },
@@ -225,7 +225,7 @@ The package includes example servers for testing:
 Run an example:
 ```bash
 node example-mcp-server.js &
-mcp-test stdio node ./example-mcp-server.js --verbose
+mcp-tester stdio node ./example-mcp-server.js --verbose
 ```
 
 ## API Reference
