@@ -5,7 +5,7 @@
  * Comprehensive testing framework for Model Context Protocol servers
  */
 
-const { MCPTestFrameworkAdvanced } = require('./lib/mcp-test-framework-advanced.js');
+const { MCPTestFrameworkAdvanced } = require('./lib/mcp-test-framework-advanced-v2.js');
 
 module.exports = {
   MCPTestFrameworkAdvanced,
@@ -15,5 +15,5 @@ module.exports = {
 
 // If called directly as a script, run the CLI
 if (require.main === module) {
-  require('./lib/mcp-test-framework-advanced.js');
+  require('./lib/mcp-test-framework-advanced-v2.js');
 }

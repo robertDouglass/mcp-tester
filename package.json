@@ -1,7 +1,7 @@
 {
   "name": "@robertdouglass/mcp-tester",
-  "version": "1.2.0",
-  "description": "Comprehensive testing framework for Model Context Protocol (MCP) servers supporting all transport types (stdio, SSE, StreamableHTTP)",
+  "version": "2.0.0",
+  "description": "Advanced testing framework for Model Context Protocol (MCP) servers with enhanced error handling, performance testing, and comprehensive tool validation",
   "main": "index.js",
   "bin": {
     "mcp-tester": "./bin/mcp-tester"
@@ -17,7 +17,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node lib/mcp-test-framework-advanced.js stdio node ./examples/example-mcp-server.js --verbose",
+    "test": "node lib/mcp-test-framework-advanced-v2.js stdio node ./examples/example-mcp-server.js --verbose",
     "test:toolbase": "node lib/run-mcp-tests.js",
     "test:all-transports": "node lib/test-all-transports.js",
     "lint": "echo 'No linting configured'",

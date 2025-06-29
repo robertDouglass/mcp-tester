@@ -12,7 +12,7 @@ const path = require('path');
 
 function showHelp() {
   console.log(`
-🧪 MCP Tester v1.2.0 - Model Context Protocol Testing Framework
+🧪 MCP Tester v2.0.0 - Model Context Protocol Testing Framework
 
 USAGE:
   npx @robertdouglass/mcp-tester <transport> <config...> [options]
@@ -133,5 +133,5 @@ if (args.includes('--claude')) {
   process.exit(0);
 }
 
-// If we get here, pass to the original framework
-require('../lib/mcp-test-framework-advanced.js');
+// If we get here, pass to the enhanced framework v2
+require('../lib/mcp-test-framework-advanced-v2.js');
