@@ -1,8 +1,16 @@
-# MCP Tester v2.0.0 🧪
+# MCP Tester v2.1.0 🧪
 
 Advanced testing framework for Model Context Protocol (MCP) servers with enhanced error handling, performance testing, and comprehensive tool validation.
 
-## What's New in v2.0.0 🚀
+## What's New in v2.1.0 🚀
+
+### Better Documentation & UX
+- **Comprehensive Tool Testing Examples**: Complete documentation with real-world examples
+- **Enhanced Error Messages**: Schema validation errors now include helpful suggestions
+- **Multi-Step Workflow Patterns**: Examples showing how to chain tool tests together
+- **Common Assertion Patterns**: 5 different assertion types with examples
+
+## What's New in v2.0.0
 
 ### Enhanced Error Handling
 - Custom error classes for better debugging (`MCPTestError`, `ConnectionError`, `TestTimeoutError`)
