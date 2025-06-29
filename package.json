@@ -1,6 +1,6 @@
 {
   "name": "@robertdouglass/mcp-tester",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Advanced testing framework for Model Context Protocol (MCP) servers with enhanced error handling, performance testing, and comprehensive tool validation",
   "main": "index.js",
   "bin": {

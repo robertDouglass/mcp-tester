@@ -1,6 +1,13 @@
-# MCP Tester v2.1.0 🧪
+# MCP Tester v2.1.1 🧪
 
 Advanced testing framework for Model Context Protocol (MCP) servers with enhanced error handling, performance testing, and comprehensive tool validation.
+
+## What's New in v2.1.1 🛠️
+
+### Project Organization
+- **Cleaner Repository**: Moved development scripts from root to `scripts/` directory
+- **Smaller Package**: Development scripts excluded from npm package
+- **Better Structure**: Root directory now only contains essential files
 
 ## What's New in v2.1.0 🚀
 
