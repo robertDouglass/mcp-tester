@@ -1,5 +1,19 @@
 # Claude MCP Testing Framework Instructions
 
+## ⚠️ CRITICAL: Avoid the #1 MCP Server Bug
+
+**NEVER use console.log() in stdio MCP servers!** It will break everything.
+
+```javascript
+// ❌ WRONG - Breaks stdio transport
+console.log('This breaks the server!');
+
+// ✅ CORRECT - Use console.error
+console.error('This is safe for debugging');
+```
+
+For stdio servers, ALL output to stdout must be JSON-RPC protocol messages. Any other output corrupts the communication.
+
 ## Overview
 This directory contains a comprehensive MCP (Model Context Protocol) testing framework that supports all three transport types: stdio, SSE, and StreamableHTTP. Use this framework to automatically test MCP servers without manual intervention.
 
@@ -167,20 +181,79 @@ async function discoverAndTestTools() {
 
 ## Important Guidelines
 
-### 1. Always Test After Building
+### 1. Proper MCP Server Structure (Avoid Logging Issues)
+
+When building an MCP server, ALWAYS follow this pattern:
+
+```javascript
+#!/usr/bin/env node
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+
+// Use console.error for any startup messages
+console.error('MCP Server starting...');
+
+const server = new Server(
+  {
+    name: 'my-mcp-server',
+    version: '1.0.0',
+  },
+  {
+    capabilities: {
+      tools: {},
+    },
+  }
+);
+
+// Define tools
+server.tools = [
+  // ... your tools
+];
+
+// Handle tool calls - NO console.log here!
+server.setRequestHandler('CallToolRequestSchema', async (request) => {
+  // Use console.error for debugging
+  console.error('Processing tool:', request.params.name);
+  
+  // Return results through the protocol, not console.log
+  return {
+    content: [{
+      type: 'text',
+      text: 'Result here'
+    }]
+  };
+});
+
+async function main() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  // This message is safe - goes to stderr
+  console.error('MCP Server running on stdio');
+}
+
+main().catch(console.error);
+```
+
+### 2. Always Test After Building
 After creating any MCP server, immediately test it:
 ```bash
+# First, check the server produces NO output on stdout
+node ./server.js > output.txt 2> error.txt
+# output.txt should be empty (or contain only valid JSON-RPC)
+# error.txt should contain your debug messages
+
+# Then test with the framework
 node /Users/robert/Code/mcp-tester/mcp-test-framework-advanced.js stdio node ./server.js --verbose
 ```
 
-### 2. Check Test Results
+### 3. Check Test Results
 Test results are saved as JSON in the specified output directory. Always check:
 - All tools are discovered correctly
 - All tool calls succeed
 - Response times are reasonable
 - No errors in stability tests
 
-### 3. Common Test Patterns
+### 4. Common Test Patterns
 
 **For calculation tools:**
 ```javascript
@@ -224,14 +297,14 @@ Test results are saved as JSON in the specified output directory. Always check:
 }
 ```
 
-### 4. Error Scenarios to Test
+### 5. Error Scenarios to Test
 Always test error conditions:
 - Invalid arguments
 - Missing required parameters  
 - Out-of-range values
 - Malformed input
 
-### 5. Performance Testing
+### 6. Performance Testing
 The framework automatically includes performance tests:
 - Rapid sequential requests (10 requests in sequence)
 - Concurrent requests (5 requests in parallel)
@@ -239,11 +312,71 @@ The framework automatically includes performance tests:
 
 ## Troubleshooting
 
+### CRITICAL: Logging Issues (Most Common Problem!)
+
+**The #1 issue when building MCP servers is incorrect logging!**
+
+MCP servers using stdio transport communicate via stdout/stdin. Any console.log() or print() statements will corrupt the JSON-RPC protocol and break the connection.
+
+**❌ WRONG - This will break your server:**
+```javascript
+console.log('Server started'); // This corrupts the stdio stream!
+
+server.setRequestHandler('CallToolRequestSchema', async (request) => {
+  console.log('Received request:', request); // This breaks everything!
+  // ...
+});
+```
+
+**✅ CORRECT - Use console.error for logging:**
+```javascript
+console.error('Server started'); // Safe - goes to stderr
+
+server.setRequestHandler('CallToolRequestSchema', async (request) => {
+  console.error('Received request:', request); // Safe for debugging
+  // ...
+});
+```
+
+**✅ EVEN BETTER - Use conditional logging:**
+```javascript
+const DEBUG = process.env.DEBUG === 'true';
+
+function log(...args) {
+  if (DEBUG) {
+    console.error('[MCP Server]', ...args);
+  }
+}
+
+log('Server started'); // Only logs when DEBUG=true
+```
+
+**How to test with debugging enabled:**
+```bash
+# Run server with debug logs
+DEBUG=true node ./my-mcp-server.js
+
+# Test with the framework (logs will appear in terminal)
+node /Users/robert/Code/mcp-tester/mcp-test-framework-advanced.js stdio "env DEBUG=true node ./my-mcp-server.js" --verbose
+```
+
+**Quick Checklist for stdio servers:**
+1. ✅ NEVER use console.log() - use console.error() instead
+2. ✅ NEVER write to stdout except through the MCP SDK
+3. ✅ ALWAYS test your server standalone first: `node ./server.js` (should show no output)
+4. ✅ Use environment variables for debug logging
+5. ✅ For production, ensure all debugging is disabled
+
+**For SSE and StreamableHTTP transports:**
+- Regular console.log() is safe since they don't use stdio
+- But it's still good practice to use proper logging
+
 ### Connection Errors
 If you see "Connection closed" errors:
-1. Ensure the server command is correct
-2. Check the server starts without errors: `node ./server.js`
-3. Verify transport configuration matches server implementation
+1. **Check for console.log statements first!** (99% of the time this is the issue)
+2. Ensure the server command is correct
+3. Check the server starts without errors: `node ./server.js`
+4. Verify transport configuration matches server implementation
 
 ### Method Not Found
 If you see "Method not found" for resources/prompts:
