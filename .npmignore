@@ -3,6 +3,7 @@
 .gitignore
 .cursorrules
 *.log
+scripts/
 
 # Test results (users will generate their own)
 test-results/
