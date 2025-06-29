@@ -1,7 +1,119 @@
 #!/usr/bin/env node
 
 /**
- * MCP Test CLI
+ * MCP Test CLI - Comprehensive testing framework for Model Context Protocol servers
+ * @author Robert Douglass
+ * @version 1.0.4
  */
 
+const { MCPTestFrameworkAdvanced } = require('../lib/mcp-test-framework-advanced.js');
+const fs = require('fs');
+const path = require('path');
+
+function showHelp() {
+  console.log(`
+🧪 MCP Tester v1.0.4 - Model Context Protocol Testing Framework
+
+USAGE:
+  npx @robertdouglass/mcp-tester <transport> <config...> [options]
+  mcp-test <transport> <config...> [options]
+
+TRANSPORT TYPES:
+  stdio <command> [args...]
+    Test MCP server using stdin/stdout transport
+    Example: mcp-test stdio node ./my-server.js
+
+  sse <url> [--header "Key: Value"]
+    Test MCP server using Server-Sent Events transport  
+    Example: mcp-test sse http://localhost:3000/mcp
+
+  streamableHttp <url> [--header "Key: Value"] [--auth "token"]
+    Test MCP server using StreamableHTTP transport
+    Example: mcp-test streamableHttp http://localhost:3000/mcp
+
+OPTIONS:
+  --verbose         Show detailed test output
+  --header "K: V"   Add HTTP header (for sse/streamableHttp)
+  --auth "token"    Add auth token (for streamableHttp)
+  --help, -h        Show this help message
+  --claude          Show Claude AI usage instructions
+
+EXAMPLES:
+  # Test stdio server
+  mcp-test stdio node ./examples/example-mcp-server.js --verbose
+
+  # Test HTTP server with auth
+  mcp-test streamableHttp http://localhost:3000/mcp --auth "Bearer xyz" --verbose
+
+  # Test SSE server with headers
+  mcp-test sse http://localhost:3000/mcp --header "Authorization: Bearer xyz"
+
+WHAT IT TESTS:
+  ✓ Connection establishment
+  ✓ Tool listing and discovery
+  ✓ Resource listing
+  ✓ Prompt listing  
+  ✓ Rapid sequential requests
+  ✓ Concurrent request handling
+  ✓ Error handling and recovery
+
+OUTPUT:
+  - Generates detailed JSON reports in ./test-results/
+  - Console summary with pass/fail counts
+  - Verbose logging when --verbose flag used
+
+CRITICAL NOTES:
+  🚨 For stdio servers: Use console.error() for logging, NOT console.log()
+     console.log() breaks JSON-RPC communication over stdio!
+
+MORE INFO:
+  GitHub: https://github.com/robertDouglass/mcp-tester
+  Package: @robertdouglass/mcp-tester
+  Use --claude for Claude AI usage instructions
+`);
+}
+
+function showClaudeInstructions() {
+  const claudemdPath = path.join(__dirname, '../CLAUDE.md');
+  try {
+    const claudeInstructions = fs.readFileSync(claudemdPath, 'utf8');
+    console.log('\n📖 CLAUDE AI USAGE INSTRUCTIONS:\n');
+    console.log(claudeInstructions);
+  } catch (error) {
+    console.log(`
+📖 CLAUDE AI USAGE INSTRUCTIONS:
+
+The @robertdouglass/mcp-tester package provides comprehensive testing for MCP servers.
+
+BASIC USAGE IN CLAUDE:
+1. Install: npm install -g @robertdouglass/mcp-tester
+2. Test stdio server: mcp-test stdio node ./your-server.js --verbose
+3. Test HTTP server: mcp-test streamableHttp http://localhost:3000/mcp --verbose
+
+IMPORTANT NOTES:
+- Always use console.error() for logging in stdio MCP servers, NOT console.log()
+- The framework tests all MCP capabilities automatically
+- Reports are saved to ./test-results/ directory
+- Use --verbose for detailed output during development
+
+For full documentation, see: https://github.com/robertDouglass/mcp-tester
+`);
+  }
+}
+
+// Parse command line arguments
+const args = process.argv.slice(2);
+
+// Handle help flags
+if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+  showHelp();
+  process.exit(0);
+}
+
+if (args.includes('--claude')) {
+  showClaudeInstructions();
+  process.exit(0);
+}
+
+// If we get here, pass to the original framework
 require('../lib/mcp-test-framework-advanced.js');
