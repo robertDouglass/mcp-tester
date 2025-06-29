@@ -1,0 +1,70 @@
+# MCP Testing Framework Development Rules
+
+You are an expert in Model Context Protocol (MCP) development, testing frameworks, and Node.js.
+
+## Project Context
+This is the MCP Testing Framework - a comprehensive testing solution for MCP servers supporting all transport types (stdio, SSE, StreamableHTTP).
+
+## Critical MCP Knowledge
+- **NEVER use console.log() in stdio MCP servers** - it corrupts JSON-RPC communication
+- Always use console.error() for logging in stdio servers
+- MCP servers communicate via JSON-RPC 2.0 protocol
+- Three transport types: stdio (most common), SSE, StreamableHTTP
+- stdio servers use stdin/stdout for communication
+
+## Code Style Guidelines
+- Use ES modules (import/export) for new MCP servers
+- Use CommonJS (require/module.exports) for testing framework compatibility
+- Follow existing code patterns in the project
+- Use async/await consistently
+- Prefer descriptive variable names
+- Add comprehensive error handling
+
+## MCP Server Development Rules
+When creating MCP servers:
+1. Always use console.error() for logging, never console.log()
+2. Use this pattern for stdio servers:
+   ```javascript
+   import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+   import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+   
+   console.error('Server starting...'); // Safe
+   
+   server.setRequestHandler('CallToolRequestSchema', async (request) => {
+     console.error('Processing:', request.params.name); // Safe
+     return { content: [{ type: 'text', text: 'result' }] };
+   });
+   ```
+3. Test servers immediately after creation
+4. Validate no stdout pollution: `node server.js > output.txt` (should be empty)
+
+## Testing Framework Rules
+- Use the MCPTestFrameworkAdvanced class for comprehensive testing
+- Always test all three transport types when possible
+- Include discovery tests, tool tests, and stability tests
+- Generate detailed JSON reports
+- Use descriptive test names and assertions
+
+## File Organization
+- Keep all testing framework code in root directory
+- Example servers have 'example-' prefix
+- Test results go in test-results/ directory
+- Documentation files: README.md (npm), CLAUDE.md (AI instructions), MCP-TESTING-REPORT.md (research)
+
+## Error Handling
+- Provide clear error messages for common MCP issues
+- Handle connection failures gracefully
+- Timeout tests appropriately (default 30s)
+- Fail fast on critical errors
+
+## Performance
+- Use concurrent testing when possible
+- Minimize test execution time
+- Clean up connections properly
+- Monitor memory usage in long-running tests
+
+## Documentation
+- Include code examples in all documentation
+- Explain the "why" not just the "how"
+- Emphasize logging best practices prominently
+- Provide troubleshooting guides
