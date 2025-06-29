@@ -1,9 +1,10 @@
 {
   "name": "@robertdouglass/mcp-tester",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Comprehensive testing framework for Model Context Protocol (MCP) servers supporting all transport types (stdio, SSE, StreamableHTTP)",
   "main": "index.js",
   "bin": {
+    "mcp-tester": "./bin/mcp-test",
     "mcp-test": "./bin/mcp-test",
     "mcp-test-advanced": "./bin/mcp-test",
     "mcp-test-all-transports": "./lib/test-all-transports.js"
