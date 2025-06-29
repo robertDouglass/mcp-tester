@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+/**
+ * MCP Test CLI
+ */
+
+require('../lib/mcp-test-framework-advanced.js');

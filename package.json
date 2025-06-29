@@ -1,30 +1,27 @@
 {
   "name": "@robertdouglass/mcp-tester",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Comprehensive testing framework for Model Context Protocol (MCP) servers supporting all transport types (stdio, SSE, StreamableHTTP)",
-  "main": "mcp-test-framework-advanced.js",
+  "main": "index.js",
   "bin": {
-    "mcp-test": "./mcp-test-framework-advanced.js",
-    "mcp-test-advanced": "./mcp-test-framework-advanced.js",
-    "mcp-test-all-transports": "./test-all-transports.js"
+    "mcp-test": "./bin/mcp-test",
+    "mcp-test-advanced": "./bin/mcp-test",
+    "mcp-test-all-transports": "./lib/test-all-transports.js"
   },
   "files": [
-    "mcp-test-framework.js",
-    "mcp-test-framework-advanced.js",
-    "test-all-transports.js",
-    "run-mcp-tests.js",
-    "test-mcp-client.js",
-    "example-*.js",
-    "simple-mcp-server.js",
+    "index.js",
+    "bin/",
+    "lib/",
+    "examples/",
     "README.md",
     "CLAUDE.md",
     "MCP-TESTING-REPORT.md",
     "LICENSE"
   ],
   "scripts": {
-    "test": "node mcp-test-framework-advanced.js stdio node ./example-mcp-server.js --verbose",
-    "test:toolbase": "node run-mcp-tests.js",
-    "test:all-transports": "node test-all-transports.js",
+    "test": "node lib/mcp-test-framework-advanced.js stdio node ./examples/example-mcp-server.js --verbose",
+    "test:toolbase": "node lib/run-mcp-tests.js",
+    "test:all-transports": "node lib/test-all-transports.js",
     "lint": "echo 'No linting configured'",
     "prepublishOnly": "npm test"
   },
