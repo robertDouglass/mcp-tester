@@ -3,7 +3,7 @@
 /**
  * MCP Test CLI - Comprehensive testing framework for Model Context Protocol servers
  * @author Robert Douglass
- * @version 1.0.5
+ * @version 1.1.0
  */
 
 const { MCPTestFrameworkAdvanced } = require('../lib/mcp-test-framework-advanced.js');
@@ -12,7 +12,7 @@ const path = require('path');
 
 function showHelp() {
   console.log(`
-🧪 MCP Tester v1.0.5 - Model Context Protocol Testing Framework
+🧪 MCP Tester v1.1.0 - Model Context Protocol Testing Framework
 
 USAGE:
   npx @robertdouglass/mcp-tester <transport> <config...> [options]
@@ -20,6 +20,10 @@ USAGE:
   mcp-test <transport> <config...> [options]
 
 TRANSPORT TYPES:
+  auto <url>
+    🎯 RECOMMENDED: Auto-detect transport type for HTTP servers
+    Example: mcp-test auto http://localhost:3000/mcp
+
   stdio <command> [args...]
     Test MCP server using stdin/stdout transport
     Example: mcp-test stdio node ./my-server.js
@@ -40,6 +44,9 @@ OPTIONS:
   --claude          Show Claude AI usage instructions
 
 EXAMPLES:
+  # Auto-detect transport (RECOMMENDED for HTTP servers)
+  mcp-test auto http://localhost:3000/mcp --verbose
+
   # Test stdio server
   mcp-test stdio node ./examples/example-mcp-server.js --verbose
 
@@ -66,6 +73,16 @@ OUTPUT:
 CRITICAL NOTES:
   🚨 For stdio servers: Use console.error() for logging, NOT console.log()
      console.log() breaks JSON-RPC communication over stdio!
+
+TROUBLESHOOTING:
+  ❓ Getting empty output or hanging? You might be using the wrong transport!
+     → Solution: Use 'auto' to detect the correct transport type
+     
+  ❓ SSE connection fails with "Invalid or illegal string"?
+     → The server likely uses StreamableHTTP, not SSE. Try 'auto' or 'streamableHttp'
+     
+  ❓ Server returns "Not Acceptable: Client must accept text/event-stream"?
+     → This usually means StreamableHTTP transport, despite the message. Use 'auto'
 
 MORE INFO:
   GitHub: https://github.com/robertDouglass/mcp-tester
