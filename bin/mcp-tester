@@ -12,7 +12,7 @@ const path = require('path');
 
 function showHelp() {
   console.log(`
-🧪 MCP Tester v2.0.0 - Model Context Protocol Testing Framework
+🧪 MCP Tester v2.1.0 - Model Context Protocol Testing Framework
 
 USAGE:
   npx @robertdouglass/mcp-tester <transport> <config...> [options]

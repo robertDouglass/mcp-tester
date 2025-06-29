@@ -154,6 +154,230 @@ async function testMyServer() {
 - Performance threshold checking
 - Response structure validation
 
+## Testing Individual Tools
+
+The most powerful feature of mcp-tester is testing individual MCP tools with custom arguments and assertions.
+
+### Basic Tool Test
+
+```javascript
+const { MCPTestFrameworkAdvanced } = require('@robertdouglass/mcp-tester');
+
+async function testMyTool() {
+  const framework = new MCPTestFrameworkAdvanced({ verbose: true });
+  
+  await framework.testServer(
+    { type: 'streamableHttp', url: 'http://localhost:3000/mcp' },
+    {
+      name: 'My Tool Test',
+      testDiscovery: false,
+      testStability: false,
+      toolTests: [{
+        toolName: 'my_tool',
+        arguments: { 
+          input: 'test data',
+          format: 'json'
+        },
+        assertions: [
+          async (result) => {
+            if (!result.content) throw new Error('No content returned');
+            console.log('Tool result:', result.content[0].text);
+          }
+        ]
+      }]
+    }
+  );
+}
+```
+
+### Multi-Step Workflow
+
+Test multiple tools in sequence, perfect for workflows like project creation:
+
+```javascript
+async function testProjectWorkflow() {
+  const framework = new MCPTestFrameworkAdvanced({ verbose: true });
+  
+  // Step 1: List available servers
+  await framework.testServer(
+    { type: 'streamableHttp', url: 'http://localhost:3000/mcp' },
+    {
+      name: 'Get Server List',
+      toolTests: [{
+        toolName: 'server_list',
+        arguments: { output: 'json' },
+        assertions: [
+          async (result) => {
+            const data = JSON.parse(result.content[0].text);
+            console.log('Available servers:', data.length);
+          }
+        ]
+      }]
+    }
+  );
+
+  // Step 2: Create project using server from step 1
+  await framework.testServer(
+    { type: 'streamableHttp', url: 'http://localhost:3000/mcp' },
+    {
+      name: 'Create Project',
+      toolTests: [{
+        toolName: 'project_create',
+        arguments: {
+          description: 'My New Project',
+          serverId: 'server-id-from-step-1'
+        },
+        assertions: [
+          async (result) => {
+            const response = JSON.parse(result.content[0].text);
+            if (response.status !== 'success') {
+              throw new Error('Project creation failed');
+            }
+            console.log('Project created with ID:', response.data.projectId);
+          }
+        ]
+      }]
+    }
+  );
+}
+```
+
+### Common Assertion Patterns
+
+```javascript
+// 1. Check response structure
+async (result) => {
+  if (!result.content?.[0]?.text) {
+    throw new Error('Invalid response structure - no text content');
+  }
+}
+
+// 2. Validate JSON response
+async (result) => {
+  const data = JSON.parse(result.content[0].text);
+  if (data.status !== 'success') {
+    throw new Error(`Operation failed: ${data.message}`);
+  }
+}
+
+// 3. Performance assertion
+async (result, metadata) => {
+  if (metadata.duration > 5000) {
+    throw new Error(`Tool too slow: ${metadata.duration}ms > 5000ms`);
+  }
+}
+
+// 4. Content validation
+async (result) => {
+  const text = result.content[0].text;
+  if (!text.includes('expected-value')) {
+    throw new Error('Response missing expected content');
+  }
+}
+
+// 5. Schema validation
+async (result) => {
+  const data = JSON.parse(result.content[0].text);
+  const requiredFields = ['id', 'name', 'status'];
+  
+  for (const field of requiredFields) {
+    if (!(field in data)) {
+      throw new Error(`Missing required field: ${field}`);
+    }
+  }
+}
+```
+
+### Real-World Example: Project Management
+
+```javascript
+// Complete example testing Mittwald project operations
+async function testMittwaldProjects() {
+  const framework = new MCPTestFrameworkAdvanced({ 
+    verbose: true,
+    performanceThresholds: { toolCall: 3000 }
+  });
+
+  const tests = {
+    name: 'Mittwald Project Management Tests',
+    testDiscovery: false,
+    toolTests: [
+      // Test 1: List projects
+      {
+        toolName: 'mittwald_project_list',
+        arguments: { output: 'json' },
+        assertions: [
+          async (result) => {
+            const data = JSON.parse(result.content[0].text);
+            console.log(`Found ${data.data.length} projects`);
+            return data.data; // Can return data for use in assertions
+          }
+        ]
+      },
+      
+      // Test 2: Get specific project details
+      {
+        toolName: 'mittwald_project_get',
+        arguments: { 
+          projectId: 'your-project-id',
+          output: 'json'
+        },
+        assertions: [
+          async (result) => {
+            const project = JSON.parse(result.content[0].text);
+            if (!project.data.isReady) {
+              throw new Error('Project is not ready');
+            }
+            console.log(`Project "${project.data.description}" is ready`);
+          }
+        ]
+      },
+      
+      // Test 3: Create new project (commented out for safety)
+      /*
+      {
+        toolName: 'mittwald_project_create',
+        arguments: {
+          description: 'Test Project',
+          serverId: 'your-server-id'
+        },
+        assertions: [
+          async (result) => {
+            const response = JSON.parse(result.content[0].text);
+            if (response.status === 'success') {
+              console.log('✅ Project created:', response.data.projectId);
+            } else {
+              throw new Error('Project creation failed');
+            }
+          }
+        ]
+      }
+      */
+    ]
+  };
+
+  await framework.testServer(
+    { type: 'streamableHttp', url: 'http://localhost:3000/mcp' },
+    tests
+  );
+
+  const report = await framework.generateReport();
+  framework.printSummary(report);
+}
+```
+
+### CLI Tool Testing
+
+You can also test individual tools from the command line by creating test files:
+
+```bash
+# Create a test file
+echo 'module.exports = { toolTests: [{ toolName: "my_tool", arguments: {}, assertions: [] }] }' > my-test.js
+
+# Run it (hypothetical - not implemented yet)
+mcp-tester auto http://localhost:3000/mcp --test-file my-test.js
+```
+
 ## Configuration Options
 
 ```javascript
