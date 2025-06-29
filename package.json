@@ -1,5 +1,5 @@
 {
-  "name": "mcp-tester",
+  "name": "@robertdouglass/mcp-tester",
   "version": "1.0.2",
   "description": "Comprehensive testing framework for Model Context Protocol (MCP) servers supporting all transport types (stdio, SSE, StreamableHTTP)",
   "main": "mcp-test-framework-advanced.js",
