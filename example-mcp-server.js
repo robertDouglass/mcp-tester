@@ -2,6 +2,7 @@
 
 const { Server } = require('@modelcontextprotocol/sdk/server/index.js');
 const { StdioServerTransport } = require('@modelcontextprotocol/sdk/server/stdio.js');
+const { CallToolRequestSchema, ListToolsRequestSchema } = require('@modelcontextprotocol/sdk/types.js');
 
 /**
  * Example MCP server for testing purposes
@@ -24,46 +25,51 @@ class ExampleMCPServer {
   }
 
   setupHandlers() {
-    // Define tools
-    this.server.tools = [
-      {
-        name: 'add_numbers',
-        description: 'Adds two numbers together',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            a: { type: 'number', description: 'First number' },
-            b: { type: 'number', description: 'Second number' },
+    // Handle list tools request
+    this.server.setRequestHandler(ListToolsRequestSchema, async () => {
+      return {
+        tools: [
+          {
+            name: 'add_numbers',
+            description: 'Adds two numbers together',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                a: { type: 'number', description: 'First number' },
+                b: { type: 'number', description: 'Second number' },
+              },
+              required: ['a', 'b'],
+            },
           },
-          required: ['a', 'b'],
-        },
-      },
-      {
-        name: 'get_random_number',
-        description: 'Returns a random number between min and max',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            min: { type: 'number', description: 'Minimum value', default: 0 },
-            max: { type: 'number', description: 'Maximum value', default: 100 },
+          {
+            name: 'get_random_number',
+            description: 'Returns a random number between min and max',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                min: { type: 'number', description: 'Minimum value', default: 0 },
+                max: { type: 'number', description: 'Maximum value', default: 100 },
+              },
+            },
           },
-        },
-      },
-      {
-        name: 'echo',
-        description: 'Echoes back the provided message',
-        inputSchema: {
-          type: 'object',
-          properties: {
-            message: { type: 'string', description: 'Message to echo' },
+          {
+            name: 'echo',
+            description: 'Echoes back the provided message',
+            inputSchema: {
+              type: 'object',
+              properties: {
+                message: { type: 'string', description: 'Message to echo' },
+              },
+              required: ['message'],
+            },
           },
-          required: ['message'],
-        },
-      },
-    ];
+        ],
+      };
+    });
+
 
     // Handle tool calls
-    this.server.setRequestHandler('CallToolRequestSchema', async (request) => {
+    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { name, arguments: args } = request.params;
 
       switch (name) {

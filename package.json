@@ -49,6 +49,7 @@
     "url": "https://github.com/robertDouglass"
   },
   "license": "MIT",
+  "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/robertDouglass/mcp-tester.git"

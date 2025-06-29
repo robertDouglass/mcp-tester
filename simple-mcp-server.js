@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+const { Server } = require('@modelcontextprotocol/sdk/server/index.js');
+const { StdioServerTransport } = require('@modelcontextprotocol/sdk/server/stdio.js');
+const { CallToolRequestSchema, ListToolsRequestSchema } = require('@modelcontextprotocol/sdk/types.js');
 
 const server = new Server(
   {
@@ -15,8 +16,10 @@ const server = new Server(
   }
 );
 
-// Define available tools
-server.tools = [
+// Handle list tools request
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+  return {
+    tools: [
   {
     name: 'add',
     description: 'Add two numbers',
@@ -41,10 +44,12 @@ server.tools = [
       required: ['a', 'b'],
     },
   },
-];
+    ],
+  };
+});
 
 // Handle tool calls
-server.setRequestHandler('CallToolRequestSchema', async (request) => {
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
   switch (name) {
